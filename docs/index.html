@@ -26,6 +26,7 @@
             <div>
               <label for="sender-name">Your name</label>
               <input type="text" id="sender-name" name="senderName" placeholder="Ana García" required>
+              <small style="color:var(--muted);font-size:0.78rem;margin-top:0.25rem;display:block;">This is how I'll write your name as the sender on the postcard.</small>
             </div>
             <div>
               <label for="sender-email">Your email</label>
@@ -42,6 +43,7 @@
             <div>
               <label for="recipient-name">Recipient's name</label>
               <input type="text" id="recipient-name" name="recipientName" placeholder="Carlos López" required>
+              <small style="color:var(--muted);font-size:0.78rem;margin-top:0.25rem;display:block;">Write it exactly as you want it to appear on the postcard.</small>
             </div>
           </div>
           <div class="form-row">
@@ -49,6 +51,7 @@
               <label for="recipient-address">Full mailing address</label>
               <textarea id="recipient-address" name="recipientAddress" rows="3"
                 placeholder="Street and number&#10;City, Postcode&#10;Country" required></textarea>
+              <small style="color:var(--muted);font-size:0.78rem;margin-top:0.25rem;display:block;">Include street, city, postal code and country. I'll copy this exactly onto the postcard.</small>
             </div>
           </div>
         </div>
@@ -62,6 +65,7 @@
               <textarea id="message" name="message" rows="4"
                 maxlength="300"
                 placeholder="Write something from the heart…" required></textarea>
+              <small style="color:var(--muted);font-size:0.78rem;margin-top:0.25rem;display:block;">I'll handwrite this on the postcard next to your photo (not on the photo itself).</small>
               <div class="char-counter" id="char-counter">0 / 300</div>
             </div>
           </div>
@@ -75,7 +79,7 @@
             <span class="upload-icon">🖼️</span>
             <p class="upload-label">
               <strong>Click to choose a photo</strong> or drag it here<br>
-              <small>JPG, PNG, HEIC — any photo from your phone or camera</small>
+              <small>JPG, PNG, HEIC — any photo from your phone or camera. I'll print it and paste it onto the postcard; nothing is written on the image itself.</small>
             </p>
           </div>
           <div class="photo-preview" id="photo-preview">
