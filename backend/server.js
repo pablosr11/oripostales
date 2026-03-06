@@ -139,7 +139,7 @@ app.use(cors({
   origin: [
     FRONTEND_URL,
     /^https?:\/\/localhost/,
-    /^https?:\/\/psiesta\.com/,
+    /^https?:\/\/(www\.)?psiesta\.com/,
     /^https?:\/\/[a-z0-9-]+\.github\.io/,
   ],
   methods: ['GET', 'POST', 'OPTIONS'],
