@@ -1,0 +1,22 @@
+{
+  "name": "oripostales-api",
+  "version": "1.0.0",
+  "description": "OriPostales backend — handwritten postcard ordering service",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "multer": "^2.1.1",
+    "resend": "^6.9.3",
+    "stripe": "^15.9.0",
+    "uuid": "^10.0.0"
+  }
+}

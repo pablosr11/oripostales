@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send a Handwritten Postcard — OriPostales</title>
+  <meta name="description" content="Send someone a real handwritten postcard with your photo, printed on an Instax and mailed by hand.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <header>
+      <span class="stamp-icon">✉️</span>
+      <h1>OriPostales</h1>
+      <p class="tagline">A real postcard, handwritten and mailed to anyone in the world.</p>
+    </header>
+
+    <div class="card">
+      <form id="postcard-form" novalidate>
+
+        <!-- FROM -->
+        <div class="form-section">
+          <p class="section-title">From you</p>
+          <div class="form-row two-col">
+            <div>
+              <label for="sender-name">Your name</label>
+              <input type="text" id="sender-name" name="senderName" placeholder="Ana García" required>
+            </div>
+            <div>
+              <label for="sender-email">Your email</label>
+              <input type="email" id="sender-email" name="senderEmail" placeholder="ana@email.com" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- TO -->
+        <div class="form-section">
+          <p class="section-title">To (recipient)</p>
+          <div class="form-row">
+            <div>
+              <label for="recipient-name">Recipient's name</label>
+              <input type="text" id="recipient-name" name="recipientName" placeholder="Carlos López" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label for="recipient-address">Full mailing address</label>
+              <textarea id="recipient-address" name="recipientAddress" rows="3"
+                placeholder="Street and number&#10;City, Postcode&#10;Country" required></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- MESSAGE -->
+        <div class="form-section">
+          <p class="section-title">Your message</p>
+          <div class="form-row">
+            <div>
+              <label for="message">What would you like to say?</label>
+              <textarea id="message" name="message" rows="4"
+                maxlength="300"
+                placeholder="Write something from the heart…" required></textarea>
+              <div class="char-counter" id="char-counter">0 / 300</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHOTO -->
+        <div class="form-section">
+          <p class="section-title">Your photo</p>
+          <div class="photo-upload-area" id="upload-area">
+            <input type="file" id="photo" name="photo" accept="image/*" required>
+            <span class="upload-icon">🖼️</span>
+            <p class="upload-label">
+              <strong>Click to choose a photo</strong> or drag it here<br>
+              <small>JPG, PNG, HEIC — any photo from your phone or camera</small>
+            </p>
+          </div>
+          <div class="photo-preview" id="photo-preview">
+            <img id="preview-img" src="" alt="Your photo preview">
+            <button type="button" class="remove-photo" id="remove-photo" title="Remove photo">×</button>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- PRICE & SUBMIT -->
+        <div class="price-block">
+          <div class="price-description">
+            Handwritten &amp; mailed anywhere in the world
+            <small>Includes postage, printing, and love</small>
+          </div>
+          <div class="price-amount">€15</div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">
+          <span class="btn-text">Send this postcard →</span>
+          <span class="btn-loading">Taking you to payment…</span>
+        </button>
+
+        <div class="form-error" id="form-error"></div>
+
+        <p class="fine-print">
+          Secure payment by Stripe. You'll be redirected to complete your payment.
+          <br>Questions? <a href="mailto:hello@psiesta.com">hello@psiesta.com</a>
+        </p>
+
+      </form>
+    </div>
+
+    <footer>
+      Made with care — every postcard is written by hand ✍️
+    </footer>
+  </div>
+
+  <script>
+    // ── Config ──────────────────────────────────────────────────────────────
+    const API_BASE_URL = 'https://api.psiesta.com';
+
+    // ── Char counter ────────────────────────────────────────────────────────
+    const messageEl = document.getElementById('message');
+    const counterEl = document.getElementById('char-counter');
+
+    messageEl.addEventListener('input', () => {
+      const len = messageEl.value.length;
+      const max = parseInt(messageEl.getAttribute('maxlength'), 10);
+      counterEl.textContent = `${len} / ${max}`;
+      counterEl.className = 'char-counter' + (len > max * 0.9 ? (len >= max ? ' over' : ' warning') : '');
+    });
+
+    // ── Photo upload / preview ───────────────────────────────────────────────
+    const photoInput  = document.getElementById('photo');
+    const uploadArea  = document.getElementById('upload-area');
+    const previewBox  = document.getElementById('photo-preview');
+    const previewImg  = document.getElementById('preview-img');
+    const removeBtn   = document.getElementById('remove-photo');
+
+    function showPreview(file) {
+      const url = URL.createObjectURL(file);
+      previewImg.src = url;
+      previewBox.style.display = 'block';
+      uploadArea.style.display = 'none';
+    }
+
+    photoInput.addEventListener('change', () => {
+      if (photoInput.files[0]) showPreview(photoInput.files[0]);
+    });
+
+    removeBtn.addEventListener('click', () => {
+      photoInput.value = '';
+      previewImg.src = '';
+      previewBox.style.display = 'none';
+      uploadArea.style.display = 'block';
+    });
+
+    // Drag-and-drop
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault();
+      uploadArea.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        photoInput.files = dt.files;
+        showPreview(file);
+      }
+    });
+
+    // ── Form submission ──────────────────────────────────────────────────────
+    const form      = document.getElementById('postcard-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const errorBox  = document.getElementById('form-error');
+
+    function showError(msg) {
+      errorBox.textContent = msg;
+      errorBox.classList.add('visible');
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+    }
+
+    function clearError() {
+      errorBox.textContent = '';
+      errorBox.classList.remove('visible');
+    }
+
+    function validate() {
+      const fields = [
+        { id: 'sender-name',       label: 'your name' },
+        { id: 'sender-email',      label: 'your email' },
+        { id: 'recipient-name',    label: "the recipient's name" },
+        { id: 'recipient-address', label: "the recipient's address" },
+        { id: 'message',           label: 'your message' },
+      ];
+      for (const f of fields) {
+        if (!document.getElementById(f.id).value.trim()) {
+          return `Please fill in ${f.label}.`;
+        }
+      }
+      const email = document.getElementById('sender-email').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return 'Please enter a valid email address.';
+      }
+      if (!photoInput.files[0]) {
+        return 'Please choose a photo to include on the postcard.';
+      }
+      return null;
+    }
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      clearError();
+
+      const validationError = validate();
+      if (validationError) {
+        showError(validationError);
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.classList.add('loading');
+
+      const formData = new FormData();
+      formData.append('senderName',        document.getElementById('sender-name').value.trim());
+      formData.append('senderEmail',       document.getElementById('sender-email').value.trim());
+      formData.append('recipientName',     document.getElementById('recipient-name').value.trim());
+      formData.append('recipientAddress',  document.getElementById('recipient-address').value.trim());
+      formData.append('message',           messageEl.value.trim());
+      formData.append('photo',             photoInput.files[0]);
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/orders`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showError(data.error || 'Something went wrong. Please try again.');
+          return;
+        }
+
+        if (data.checkoutUrl) {
+          window.location.href = data.checkoutUrl;
+        } else {
+          showError('Payment session could not be created. Please try again.');
+        }
+      } catch (err) {
+        showError('Network error — please check your connection and try again.');
+      }
+    });
+  </script>
+</body>
+</html>

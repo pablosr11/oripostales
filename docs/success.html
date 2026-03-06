@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Postcard on its way! — OriPostales</title>
+  <meta name="description" content="Your postcard has been ordered and will be handwritten and mailed.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .success-card {
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      display: block;
+      margin-bottom: 1.25rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .success-title {
+      font-family: 'Lora', serif;
+      font-size: 1.75rem;
+      color: var(--dark-brown);
+      margin-bottom: 0.75rem;
+    }
+
+    .success-body {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 420px;
+      margin: 0 auto 2rem;
+    }
+
+    .success-body strong {
+      color: var(--dark-brown);
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      text-align: left;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .step {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      font-size: 0.9rem;
+      color: var(--dark-brown);
+    }
+
+    .step-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .btn-back {
+      display: inline-block;
+      padding: 0.7rem 1.75rem;
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-back:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    @media (max-width: 500px) {
+      .success-card { padding: 2rem 1.25rem; }
+      .success-title { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <header>
+      <span class="stamp-icon">✉️</span>
+      <h1>OriPostales</h1>
+      <p class="tagline">A real postcard, handwritten and mailed to anyone in the world.</p>
+    </header>
+
+    <div class="card success-card">
+      <span class="success-icon">💌</span>
+      <h2 class="success-title">Your postcard is on its way!</h2>
+      <p class="success-body">
+        Payment received — thank you! I'll print your photo on an Instax,
+        <strong>write your message by hand</strong>, and pop it in the post
+        within 1–2 business days.
+      </p>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-icon">🖨️</span>
+          <span>Your photo gets printed on an Instax mini</span>
+        </div>
+        <div class="step">
+          <span class="step-icon">✍️</span>
+          <span>I write your message on the back, by hand</span>
+        </div>
+        <div class="step">
+          <span class="step-icon">📬</span>
+          <span>Stamped and mailed to the address you provided</span>
+        </div>
+        <div class="step">
+          <span class="step-icon">🌍</span>
+          <span>Delivered anywhere in the world</span>
+        </div>
+      </div>
+
+      <a href="index.html" class="btn-back">Send another postcard</a>
+    </div>
+
+    <footer>
+      Made with care — every postcard is written by hand ✍️
+    </footer>
+  </div>
+</body>
+</html>
